@@ -22,7 +22,7 @@ def load_model():
 
 
 def predict(image_bytes: bytes) -> dict:
-    global ALL_CLASSES
+    global ALL_CLASSES, TRAINED_CLASSES
 
     t0 = time.perf_counter()
 
@@ -39,6 +39,9 @@ def predict(image_bytes: bytes) -> dict:
             "confidence": item["confidence"]
         })
 
+    # ✅ FIX: move here
+    TRAINED_CLASSES = list({p["condition"] for p in top_predictions})
+
     if not top_predictions:
         return {
             "condition": "Uncertain",
@@ -50,16 +53,10 @@ def predict(image_bytes: bytes) -> dict:
             "device": str(torch.device("cuda" if torch.cuda.is_available() else "cpu")),
         }
 
-    print("\n🔥 ALL PREDICTIONS:\n")
-
     for p in top_predictions:
         name = p["condition"]
         ALL_CLASSES.add(name)
         print(f"{name} : {p['confidence']:.2f}%")
-
-    print("\n🔥 ALL CLASSES DISCOVERED:\n")
-    for c in sorted(ALL_CLASSES):
-        print(c)
 
     top1 = top_predictions[0]
     condition = top1["condition"].strip()
