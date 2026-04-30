@@ -47,9 +47,9 @@ _classifier = None
 def get_classifier():
     global _classifier
     if _classifier is None:
-        from medical_v2.models.classifier import load_vit
+        from models.classifier import load_vit
         load_model()
-        from medical_v2.models import classifier
+        from models import classifier
         _classifier = classifier
         logger.info("Classifier loaded")
     return _classifier
@@ -88,7 +88,7 @@ class HealthResponse(BaseModel):
 
 @app.get("/health", response_model=HealthResponse, tags=["System"])
 async def health():
-    from medical_v2.models.classifier import TRAINED_CLASSES
+    from models.classifier import TRAINED_CLASSES
     return {
         "status":           "ok",
         "model_loaded":     _classifier is not None,
@@ -99,7 +99,7 @@ async def health():
 
 @app.get("/classes", tags=["System"])
 async def list_classes():
-    from medical_v2.models.classifier import TRAINED_CLASSES, URGENT_CONDITIONS
+    from models.classifier import TRAINED_CLASSES, URGENT_CONDITIONS
     return {
         "total":   len(TRAINED_CLASSES),
         "classes": TRAINED_CLASSES,
