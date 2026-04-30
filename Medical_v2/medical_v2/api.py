@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from PIL import Image
 from pydantic import BaseModel
-from medical_v2.models.medical_advice import DISEASE_INFO
+from models.medical_advice import DISEASE_INFO
 import sys
 import os
 
