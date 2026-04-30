@@ -1,6 +1,6 @@
 import time
 import torch
-from medical_v2.models.vit_model import predict_vit
+from models.vit_model import predict_vit
 
 
 
